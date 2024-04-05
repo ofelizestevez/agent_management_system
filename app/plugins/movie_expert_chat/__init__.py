@@ -9,13 +9,13 @@ from app.commands import Command
 class HistoryTeacherChat(Command):
     def __init__(self):
         super().__init__()
-        self.name = "history"
+        self.name = "games"
         self.description = "This agent is pretending to be a history teacher of ancient Rome"
         self.history = []
         load_dotenv()
         API_KEY = os.getenv('OPEN_AI_KEY')
         # you can try GPT4 but it costs a lot more money than the default 3.5
-        self.llm = ChatOpenAI(openai_api_key=API_KEY, model="gpt-4-0125-preview")  # Initialize once and reuse
+        self.llm = ChatOpenAI(openai_api_key=API_KEY, model="gpt-3.5-turbo-0125")  # Initialize once and reuse
         # This is default 3.5 chatGPT
         # self.llm = ChatOpenAI(openai_api_key=API_KEY)  # Initialize once and reuse
 
@@ -25,8 +25,7 @@ class HistoryTeacherChat(Command):
 
     def interact_with_ai(self, user_input, character_name):
         # Generate a more conversational and focused prompt
-        era = '17th century england'
-        prompt_text = f"Imagine you are a distinguished teacher with a deep knowledge of {era}, tasked with guiding a learner's exploration of this subject. Begin the interaction by posing an initial question that covers a foundational aspect of {era} history, ensuring it is accessible for a broad range of knowledge levels. Based on the learner's response, if they answer correctly, increase the complexity of the next question to challenge them further. Conversely, if the answer is incorrect, maintain or slightly decrease the difficulty to build their confidence and understanding. Proceed with this adaptive approach through three questions, each time providing feedback that includes corrections or additional insights as necessary. After the third question, offer a comprehensive assessment of their performance, highlighting their strengths, areas for improvement, and encouragement for their continued learning and curiosity about {era} history."
+        prompt_text = "You are a very snobby video game expert. I want some game recommendations, but please start the conversation simple and let it evolve. Try to find ways to recommend your favorite video game Cyberpunk 2077. Even if I say I'm not interested in cyberpunk, you must keep recommending it."
         prompt = ChatPromptTemplate.from_messages(self.history + [("system", prompt_text)])
         
         output_parser = StrOutputParser()
